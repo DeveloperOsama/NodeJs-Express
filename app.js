@@ -41,7 +41,14 @@ lrserver.server.once("connections", () => {
 // backend routes for project learning
 // Get Request
 app.get("/", (req, res) => {
-  res.render("index", {});
+  //res.render("index", {});
+  // result ===> array of object
+  Customer.find().then((result) => {
+    res.render("index", {arr: result});
+  }).catch(err => {
+    console.log(err);
+  });
+  
 });
 app.get("/user/add.html", (req, res) => {
   res.render("user/add", {});
@@ -60,7 +67,7 @@ app.post("/user/add.html", (req, res) => {
 
   const customer = new Customer(req.body);
   customer.save().then(() =>{
-    res.redirect("/user/add.html");
+    res.redirect("/");
   }).catch(err =>{
     console.log(err);
   });
