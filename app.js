@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3001
 const mongoose = require('mongoose');
-const App = require("./models/mydataSchema")
+const App = require("./models/mydataSchema");
+const Customer = require("./models/customerSchema");
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -38,6 +39,7 @@ lrserver.server.once("connections", () => {
 });*/
 
 // backend routes for project learning
+// Get Request
 app.get("/", (req, res) => {
   res.render("index", {});
 });
@@ -47,10 +49,25 @@ app.get("/user/add.html", (req, res) => {
 app.get("/user/view.html", (req, res) => {
   res.render("user/view", {});
 });
-
 app.get("/user/edit.html", (req, res) => {
   res.render("user/edit", {});
 });
+
+// POST Request
+
+app.post("/user/add.html", (req, res) => {
+  //console.log(req.body);
+
+  const customer = new Customer(req.body);
+  customer.save().then(() =>{
+    res.redirect("/user/add.html");
+  }).catch(err =>{
+    console.log(err);
+  });
+  
+});  
+
+
 
 // app.get("/index.html", (req, res) => {
 //   res.send("<h1>Send Successfully!!</h1>")
