@@ -7,6 +7,9 @@ const Customer = require("./models/customerSchema");
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+var moment = require('moment');
+var methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 // Auoto refreshes
 const path = require('path');
@@ -15,6 +18,7 @@ const lrserver = livereload.createServer();
 lrserver.watch(path.join(__dirname, 'public'));
 
 const connectlivereload = require('connect-livereload');
+const User = require('./models/customerSchema');
 app.use(connectlivereload());
 
 lrserver.server.once("connections", () => {
@@ -41,23 +45,40 @@ lrserver.server.once("connections", () => {
 // backend routes for project learning
 // Get Request
 app.get("/", (req, res) => {
-  //res.render("index", {});
+  
   // result ===> array of object
   Customer.find().then((result) => {
-    res.render("index", {arr: result});
+    res.render("index", { arr: result, moment: moment });
   }).catch(err => {
     console.log(err);
   });
-  
+
 });
 app.get("/user/add.html", (req, res) => {
   res.render("user/add", {});
 });
-app.get("/user/view.html", (req, res) => {
-  res.render("user/view", {});
+
+app.get("/edit/:id", (req, res) => {
+  User.findById(req.params.id).then((user) => {
+    //console.log(user);
+    res.render("user/edit", {user: user, moment: moment});
+  }).catch(err => {
+    console.log(err);
+  });
 });
-app.get("/user/edit.html", (req, res) => {
-  res.render("user/edit", {});
+
+// Get view user
+app.get("/view/:id", (req, res) => {
+
+  User.findById(req.params.id)
+    .then((user) => {
+      //console.log(user);
+      res.render("user/view", {user: user, moment: moment});
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+      //res.render("user/view");
 });
 
 // POST Request
@@ -66,14 +87,27 @@ app.post("/user/add.html", (req, res) => {
   //console.log(req.body);
 
   const customer = new Customer(req.body);
-  customer.save().then(() =>{
+  customer.save().then(() => {
     res.redirect("/");
-  }).catch(err =>{
+  }).catch(err => {
     console.log(err);
   });
-  
-});  
 
+});
+
+// DELETE Request
+
+app.delete("/delete/:id", (req, res) => {
+
+  User.findByIdAndDelete(req.params.id)
+   .then(() => {
+      res.redirect("/");
+    })
+   .catch((err) => {
+      console.log(err);
+    });
+
+});
 
 
 // app.get("/index.html", (req, res) => {

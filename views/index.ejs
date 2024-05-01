@@ -48,33 +48,51 @@
               </thead>
               <tbody>
 
-                <% arr.forEach((element, index) => { %>
+                <% arr.forEach((element, index)=> { %>
                   <tr>
-                    <th scope="row"><%= index +1 %></th>
-                    <td> <%= element.firstName %>  <%= element.lastName %> </td>
-                    <td> <%= element.gender %> </td>
-                    <td> <%= element.country %> </td>
-                    <td> <%= element.age %> </td>
-                    <td>1 days ago </td>
+                    <th scope="row">
+                      <%= index +1 %>
+                    </th>
+                    <td>
+                      <%= element.firstName %>
+                        <%= element.lastName %>
+                    </td>
+                    <td>
+                      <%= element.gender %>
+                    </td>
+                    <td>
+                      <%= element.country %>
+                    </td>
+                    <td>
+                      <%= element.age %>
+                    </td>
+                    <td>
+                      <%= moment(element.updatedAt).fromNow(); %>
+                    </td>
                     <td>
                       <a data-bs-toggle="tooltip" data-bs-title="View details" data-bs-placement="top"
-                        class="btn btn-primary btn-sm" href="./user/view.html"><i class="bi bi-eye"></i></a>
-  
+                        class="btn btn-primary btn-sm" href="/view/<%= element._id %>"><i class="bi bi-eye"></i></a>
+
                       <a data-bs-toggle="tooltip" data-bs-title="Edit user" data-bs-placement="top"
-                        class="btn btn-primary btn-sm" href="./user/edit.html">
+                        class="btn btn-primary btn-sm" href="/edit/<%= element._id %>">
                         <i class="bi bi-pencil"></i>
                       </a>
-                      <button data-bs-toggle="tooltip" data-bs-title="Delete user" data-bs-placement="top"
-                        class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash"></i>
-                      </button>
+                      <form 
+                      style="display: inline;"
+                      action="/delete/<%= element._id %>?_method=DELETE" 
+                      method="post">
+                        <button data-bs-toggle="tooltip" data-bs-title="Delete user" data-bs-placement="top"
+                          class="btn btn-danger btn-sm" type="submit">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </form>
                     </td>
                   </tr>
-                <% }) %>
+                  <% }) %>
 
-                
 
-                
+
+
               </tbody>
             </table>
         </section>

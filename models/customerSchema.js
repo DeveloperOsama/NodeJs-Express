@@ -6,12 +6,16 @@ const Schema = mongoose.Schema;
 const customerSchema = new Schema ({
     firstName: String,
     lastName: String,
-    emitter: String,
+    email: String,
     phoneNumber: String,
     age: String,
     country: String,
     gender: String,
-});
+},
+    {
+        timestamps: true,
+    }
+);
 
 // create a model based on the schema
 
