@@ -23,59 +23,72 @@
 </head>
 
 <body>
-  
+
   <%- include('../Components/dark-light.ejs') %>
 
-  <main class="d-flex flex-nowrap">
-    
-    <%- include('../Components/sidebar.ejs', {currentPage: "search"}) %>
+    <main class="d-flex flex-nowrap">
 
-    <div class="b-example-divider b-example-vr"></div>
+      <%- include('../Components/sidebar.ejs', {currentPage: "search" }) %>
 
-    <section class="w-100">
-      
-      <%- include('../Components/navbar.ejs') %>
+        <div class="b-example-divider b-example-vr"></div>
 
-      <table style="width: 99%" class="text-center mx-auto table mt-5 table-striped table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Country</th>
+        <section class="w-100">
 
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>test1</td>
-            <td>test2</td>
-            <td>@test3</td>
+          <%- include('../Components/navbar.ejs') %>
 
-            <td>
-              <a data-bs-toggle="tooltip" data-bs-title="View details" data-bs-placement="top"
-                class="btn btn-primary btn-sm" href="./user/view.html"><i class="bi bi-eye"></i></a>
+            <table style="width: 99%" class="text-center mx-auto table mt-5 table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Country</th>
 
-              <a data-bs-toggle="tooltip" data-bs-title="Edit user" data-bs-placement="top"
-                class="btn btn-primary btn-sm" href="./user/edit.html">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <button data-bs-toggle="tooltip" data-bs-title="Delete user" data-bs-placement="top"
-                class="btn btn-danger btn-sm">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
-  <script src="../js/bootstrap.bundle.min.js"></script>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% user.forEach( (element, index) => { %>
+                  <tr>
+                    <th scope="row">
+                      <%= index +1 %>
+                    </th>
+                    <td>
+                      <%= element.firstName %>
+                        <%= element.lastName %>
+                    </td>
+                    <td>
+                      <%= element.gender %>
+                    </td>
+                    <td>
+                      <%= element.country %>
+                    </td>
 
-  <script src="../js/sidebars.js"></script>
-  <script src="../js/main.js"></script>
+                    <td>
+                      <a data-bs-toggle="tooltip" data-bs-title="View details" data-bs-placement="top"
+                        class="btn btn-primary btn-sm" href="/view/<%= element._id  %>"><i class="bi bi-eye"></i></a>
+
+                      <a data-bs-toggle="tooltip" data-bs-title="Edit user" data-bs-placement="top"
+                        class="btn btn-primary btn-sm" href="/edit/<%= element._id %>">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <form style="display: inline;" action="/delete/<%= element._id %>?_method=DELETE" method="post">
+                        <button data-bs-toggle="tooltip" data-bs-title="Delete user" data-bs-placement="top"
+                          class="btn btn-danger btn-sm">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+        </section>
+    </main>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+
+    <script src="../js/sidebars.js"></script>
+    <script src="../js/main.js"></script>
 </body>
 
 </html>
